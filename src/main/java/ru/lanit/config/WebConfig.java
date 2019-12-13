@@ -8,13 +8,17 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -23,6 +27,7 @@ import java.util.Properties;
 @ComponentScan("ru.lanit")
 @PropertySource(value = { "classpath:application.properties" })
 @EnableTransactionManagement
+@EnableJpaRepositories(basePackages = {"ru.lanit.repository"})
 public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
@@ -36,7 +41,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(env.getRequiredProperty("spring.datasource.driver"));
+        dataSource.setDriverClassName(env.getRequiredProperty("spring.datasource.driver-class-name"));
         dataSource.setUrl(env.getRequiredProperty("spring.datasource.url"));
         dataSource.setUsername(env.getRequiredProperty("spring.datasource.username"));
         dataSource.setPassword(env.getRequiredProperty("spring.datasource.password"));
@@ -79,5 +84,21 @@ public class WebConfig implements WebMvcConfigurer {
         HibernateTransactionManager txManager = new HibernateTransactionManager();
         txManager.setSessionFactory(sessionFactory);
         return txManager;
+    }
+
+    @Bean
+    public EntityManagerFactory entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+        emf.setDataSource(getDataSource());
+        emf.setPackagesToScan("ru.lanit.entity");
+//        emf.setPersistenceUnitName("spring-jpa-unit");
+        emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+        Properties jpaProperties = new Properties();
+        jpaProperties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
+        jpaProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        jpaProperties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
+        emf.setJpaProperties(jpaProperties);
+        emf.afterPropertiesSet();
+        return emf.getObject();
     }
 }
