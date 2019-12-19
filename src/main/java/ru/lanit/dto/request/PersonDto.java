@@ -1,8 +1,10 @@
 package ru.lanit.dto.request;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import ru.lanit.constraint.PersonIdConstraint;
 import ru.lanit.deserializer.RuJsonDateDeserializer;
+import ru.lanit.serializer.RuJsonDateSerializer;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -18,6 +20,7 @@ public class PersonDto {
     private String name;
 
     @JsonDeserialize(using = RuJsonDateDeserializer.class)
+    @JsonSerialize(using = RuJsonDateSerializer.class)
     @NotNull
     @Past
     private LocalDate birthdate;

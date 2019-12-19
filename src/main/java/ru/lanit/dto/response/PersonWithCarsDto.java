@@ -9,8 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class PersonWithCarsDto {
-    @NotNull
-    private Long id;
+    private long id;
 
     @NotNull
     private String name;
@@ -30,11 +29,11 @@ public class PersonWithCarsDto {
         this.cars = cars;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -61,7 +61,7 @@ public class PersonService {
         repository.deleteAll();
     }
 
-    private Person getById(Long personId) throws PersonNotFoundException {
+    public Person getById(Long personId) throws PersonNotFoundException {
         return repository.findById(personId).orElseThrow(PersonNotFoundException::new);
     }
 }
