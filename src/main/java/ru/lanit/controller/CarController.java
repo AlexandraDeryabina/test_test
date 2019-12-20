@@ -2,6 +2,7 @@ package ru.lanit.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +21,8 @@ public class CarController {
     }
 
     @PostMapping(value = "/car", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void create(@Valid @RequestBody CarDto dto) {
+    public ResponseEntity create(@Valid @RequestBody CarDto dto) {
         carService.save(dto);
+        return ResponseEntity.ok().build();
     }
 }

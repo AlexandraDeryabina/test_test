@@ -8,8 +8,6 @@ import ru.lanit.entity.Car;
 import ru.lanit.repository.CarRepository;
 import ru.lanit.repository.PersonRepository;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 

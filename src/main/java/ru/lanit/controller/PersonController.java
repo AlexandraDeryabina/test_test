@@ -22,8 +22,9 @@ public class PersonController {
     }
 
     @PostMapping(value = "/person", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void create(@Valid @RequestBody PersonDto dto) {
+    public ResponseEntity create(@Valid @RequestBody PersonDto dto) {
         personService.save(dto);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping(value = "/personwithcars", params = "personid")

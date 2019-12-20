@@ -56,7 +56,7 @@ public class PersonControllerUnitTest {
     }
 
     @Test
-    public void getPersonWithCars() {
+    public void getPersonWithCars_shouldReturn2Cars() {
         Person person = new Person(
                 personId,
                 personName,
